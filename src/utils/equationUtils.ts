@@ -48,6 +48,7 @@ export function checkSolution(userSolution: string, correctSolution: number | nu
       const userValue = math.evaluate(userSolution);
       return Math.abs(userValue - correctSolution) < 0.001;
     } catch (e) {
+      console.error("Error evaluating user solution:", e);
       return false;
     }
   } else if (Array.isArray(correctSolution)) {
@@ -56,6 +57,7 @@ export function checkSolution(userSolution: string, correctSolution: number | nu
       const userValue = math.evaluate(userSolution);
       return correctSolution.some(sol => Math.abs(userValue - sol) < 0.001);
     } catch (e) {
+      console.error("Error evaluating user solution:", e);
       return false;
     }
   }
@@ -137,16 +139,22 @@ export function generateFractionalEquation(difficulty: 'basic' | 'intermediate' 
       break;
       
     case 'intermediate':
-      // Generate an intermediate fractional equation: a/(x+b) + c/(x+d) = e
-      a = getRandomInt(1, 10);
-      b = getRandomInt(1, 5);
-      c = getRandomInt(1, 10);
-      d = getRandomInt(1, 5) * (b === d ? 2 : 1); // Ensure b ≠ d
-      e = getRandomInt(1, 5);
+      // Generate an intermediate fractional equation with proper solution calculation
+      a = getRandomInt(1, 5);
+      b = getRandomInt(1, 3);
+      c = getRandomInt(1, 5);
+      d = getRandomInt(1, 3) * (b === d ? 2 : 1); // Ensure b ≠ d
       
-      // Simplified calculation for demo purposes
-      // Actual solution would be more complex
-      const intermediateSolution = 2; // Simplified
+      // Creating a solvable equation with an integer solution for easier verification
+      const intermediateSolution = getRandomInt(1, 3);
+      // Reverse-engineer the value of e to make the equation have the intended solution
+      const numerator1 = a * (intermediateSolution + d);
+      const denominator1 = intermediateSolution + b;
+      const numerator2 = c * (intermediateSolution + b);
+      const denominator2 = intermediateSolution + d;
+      e = (numerator1 / denominator1 + numerator2 / denominator2);
+      // Round e to 2 decimal places for cleaner equations
+      e = Math.round(e * 100) / 100;
       
       equation = {
         id: `frac-intermediate-${Date.now()}`,
@@ -181,13 +189,15 @@ export function generateFractionalEquation(difficulty: 'basic' | 'intermediate' 
       break;
       
     case 'advanced':
-      // For demonstration, using simpler equation with a fixed solution
+      // Create an advanced fractional equation with a fixed solution for consistency
+      const advancedSolution = 0; // Fixed solution for advanced equation
+      
       equation = {
         id: `frac-advanced-${Date.now()}`,
         type: 'fractional',
         text: `求解：\\frac{2x}{x^2-9} - \\frac{1}{x-3} = \\frac{1}{x+3}`,
         latex: `\\frac{2x}{x^2-9} - \\frac{1}{x-3} = \\frac{1}{x+3}`,
-        solution: 0,
+        solution: advancedSolution,
         steps: [
           {
             stepNumber: 1,

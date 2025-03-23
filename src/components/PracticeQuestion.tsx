@@ -48,22 +48,31 @@ const PracticeQuestion: React.FC<PracticeQuestionProps> = ({
       return;
     }
 
-    const trimmedAnswer = userAnswer.trim();
-    const isCorrect = checkSolution(trimmedAnswer, equation.solution);
-
-    if (isCorrect) {
-      setFeedback('correct');
-      if (onSolve) onSolve(true);
-    } else {
-      setFeedback('incorrect');
-      setAttempts(prev => prev + 1);
+    try {
+      const trimmedAnswer = userAnswer.trim();
+      const isCorrect = checkSolution(trimmedAnswer, equation.solution);
       
-      // After 3 failed attempts, show a hint
-      if (attempts + 1 >= 3 && showHints) {
-        setFeedback('hint');
+      console.log('User answer:', trimmedAnswer);
+      console.log('Expected solution:', equation.solution);
+      console.log('Is correct:', isCorrect);
+  
+      if (isCorrect) {
+        setFeedback('correct');
+        if (onSolve) onSolve(true);
+      } else {
+        setFeedback('incorrect');
+        setAttempts(prev => prev + 1);
+        
+        // After 3 failed attempts, show a hint
+        if (attempts + 1 >= 3 && showHints) {
+          setFeedback('hint');
+        }
+        
+        if (onSolve) onSolve(false);
       }
-      
-      if (onSolve) onSolve(false);
+    } catch (error) {
+      console.error('Error checking answer:', error);
+      setErrorMessage('无法计算答案，请检查格式');
     }
   };
 
@@ -114,6 +123,7 @@ const PracticeQuestion: React.FC<PracticeQuestionProps> = ({
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
+              key={feedback + hintIndex} // Add a unique key to prevent animation issues
             >
               {feedback === 'correct' && (
                 <div className="p-4 bg-green-50 text-green-700 rounded-lg flex items-start">

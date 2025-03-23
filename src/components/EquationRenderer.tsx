@@ -30,11 +30,25 @@ const EquationRenderer: React.FC<EquationRendererProps> = ({
           // Clean up potentially invalid LaTeX formatting
           let processedLatex = latex;
           
-          // Check if we need to add proper formatting for fractions
+          // Fix common LaTeX formatting issues
+          // 1. Check if we have \frac without proper braces
           if (processedLatex.includes('\\frac') && !processedLatex.match(/\\frac\{.*?\}\{.*?\}/)) {
-            // Convert \frac{a}{x + b} = c to \frac{a}{x + b} = c
-            processedLatex = processedLatex.replace(/\\frac([^{])?([^{]*)([^{]*)/g, '\\frac{$1$2}{$3}');
+            // Convert \fraca/x+b = c to \frac{a}{x+b} = c
+            processedLatex = processedLatex.replace(/\\frac([a-zA-Z0-9])\/(([a-zA-Z0-9])[+\-]?([a-zA-Z0-9])?)/g, '\\frac{$1}{$2}');
+            
+            // If the above doesn't catch it, try a more general pattern
+            if (processedLatex.includes('\\frac') && !processedLatex.match(/\\frac\{.*?\}\{.*?\}/)) {
+              processedLatex = processedLatex.replace(/\\frac([^{])?([^{]*)([^{]*)/g, '\\frac{$1$2}{$3}');
+            }
           }
+          
+          // 2. Fix incomplete fraction notation (just 'frac')
+          if (processedLatex.includes('frac') && !processedLatex.includes('\\frac')) {
+            processedLatex = processedLatex.replace(/frac/g, '\\frac');
+          }
+          
+          console.log('Original LaTeX:', latex);
+          console.log('Processed LaTeX:', processedLatex);
           
           // Render after a delay
           setTimeout(() => {
