@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -7,7 +6,7 @@ import StepByStepSolver from '@/components/StepByStepSolver';
 import PracticeQuestion from '@/components/PracticeQuestion';
 import EquationRenderer from '@/components/EquationRenderer';
 import { Button } from '@/components/ui/button';
-import { Function, ChevronRight, CheckCircle, BookOpen } from 'lucide-react';
+import { BrainCircuit, ChevronRight, CheckCircle, BookOpen } from 'lucide-react';
 import { 
   generatePolynomialEquation, 
   Equation 
@@ -67,7 +66,7 @@ const PolynomialEquations = () => {
               方程讲解
             </TabsTrigger>
             <TabsTrigger value="practice" className="text-base">
-              <Function className="h-4 w-4 mr-2" />
+              <BrainCircuit className="h-4 w-4 mr-2" />
               应用实例
             </TabsTrigger>
           </TabsList>

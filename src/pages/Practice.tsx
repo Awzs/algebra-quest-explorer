@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Layout from '@/components/Layout';
@@ -13,7 +12,7 @@ import {
   Star, 
   ChevronRight,
   ChevronLeft,
-  Function,
+  BrainCircuit,
   Divide,
   Square,
   Grid,
@@ -165,7 +164,7 @@ const Practice = () => {
   const getEquationTypeIcon = (type: EquationType) => {
     switch (type) {
       case 'polynomial':
-        return <Function className="h-5 w-5" />;
+        return <BrainCircuit className="h-5 w-5" />;
       case 'fractional':
         return <Divide className="h-5 w-5" />;
       case 'radical':

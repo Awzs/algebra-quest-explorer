@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import Layout from '@/components/Layout';
 import EquationCard from '@/components/EquationCard';
 import { 
-  Function, 
+  BrainCircuit, 
   Divide, 
   Square, 
   Grid, 
@@ -24,7 +24,7 @@ const equationTypes: Array<{
     type: 'polynomial',
     title: '整式方程',
     description: '学习整式方程的定义、分类和基本解法，包括一元一次方程和一元多次方程',
-    icon: <Function className="h-6 w-6" />,
+    icon: <BrainCircuit className="h-6 w-6" />,
     path: '/polynomial-equations'
   },
   {

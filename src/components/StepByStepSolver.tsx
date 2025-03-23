@@ -133,7 +133,7 @@ const StepByStepSolver: React.FC<StepByStepSolverProps> = ({ steps, className })
           </Button>
           
           <Button
-            variant="primary"
+            variant="default"
             size="sm"
             onClick={handleNextStep}
             disabled={currentStep === steps.length - 1}
