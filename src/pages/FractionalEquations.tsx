@@ -98,7 +98,7 @@ const FractionalEquations = () => {
                         
                         <div className="p-4 bg-accent rounded-lg mb-4">
                           <EquationRenderer
-                            latex="\\frac{a}{x + b} = c"
+                            latex="\frac{a}{x + b} = c"
                             displayMode={true}
                           />
                         </div>
