@@ -27,10 +27,19 @@ const EquationRenderer: React.FC<EquationRendererProps> = ({
           // Import KaTeX CSS
           await import('katex/dist/katex.min.css');
           
+          // Clean up potentially invalid LaTeX formatting
+          let processedLatex = latex;
+          
+          // Check if we need to add proper formatting for fractions
+          if (processedLatex.includes('\\frac') && !processedLatex.match(/\\frac\{.*?\}\{.*?\}/)) {
+            // Convert \frac{a}{x + b} = c to \frac{a}{x + b} = c
+            processedLatex = processedLatex.replace(/\\frac([^{])?([^{]*)([^{]*)/g, '\\frac{$1$2}{$3}');
+          }
+          
           // Render after a delay
           setTimeout(() => {
             if (containerRef.current) {
-              katex.default.render(latex, containerRef.current, {
+              katex.default.render(processedLatex, containerRef.current, {
                 throwOnError: false,
                 displayMode: displayMode,
               });
@@ -62,5 +71,3 @@ const EquationRenderer: React.FC<EquationRendererProps> = ({
 };
 
 export default EquationRenderer;
-
-// Add this to package.json: "katex": "^0.16.8"
